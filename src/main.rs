@@ -29,8 +29,8 @@ fn main() -> Result<(), Error> {
         .property("is-live", true)
         .build()?;
 
-    let overlay = gst::ElementFactory::make("textoverlay")
-        .property_from_str("text", "SDI Output 1:\n")
+    let overlay = gst::ElementFactory::make("timeoverlay")
+        .property_from_str("text", "SDI Output:\n")
         .property_from_str("halignment", "center")
         .property_from_str("valignment", "center")
         .property_from_str("font-desc", "Sans, 36")
