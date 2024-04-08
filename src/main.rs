@@ -24,7 +24,7 @@ fn main() -> Result<(), Error> {
         .framerate((60, 1).into())
         .build();
 
-    let source = gst::ElementFactory::make("videotestsrc")
+    let video_source = gst::ElementFactory::make("videotestsrc")
         .property_from_str("pattern", "smpte")
         .property("is-live", true)
         .build()?;
@@ -43,13 +43,35 @@ fn main() -> Result<(), Error> {
     let timecode = gst::ElementFactory::make("timecodestamper").build()?;
     let convert = gst::ElementFactory::make("videoconvert").build()?;
 
-    let sink = gst::ElementFactory::make("decklinkvideosink")
+    let video_sink = gst::ElementFactory::make("decklinkvideosink")
         .property_from_str("mode", "1080p60")
         .property("sync", true)
         .build()?;
 
-    pipeline.add_many([&source, &overlay, &caps, &timecode, &convert, &sink])?;
-    gst::Element::link_many([&source, &overlay, &caps, &timecode, &convert, &sink])?;
+    let audio_source = gst::ElementFactory::make("audiotestsrc").build()?;
+    let audio_sink = gst::ElementFactory::make("decklinkaudiosink").build()?;
+
+    pipeline.add_many([
+        &video_source,
+        &overlay,
+        &caps,
+        &timecode,
+        &convert,
+        &video_sink,
+        &audio_source,
+        &audio_sink,
+    ])?;
+
+    gst::Element::link_many([
+        &video_source,
+        &overlay,
+        &caps,
+        &timecode,
+        &convert,
+        &video_sink,
+    ])?;
+
+    gst::Element::link_many([&audio_source, &audio_sink])?;
 
     pipeline.set_state(gst::State::Playing)?;
 
