@@ -1,0 +1,13 @@
+[package]
+name = "testcard"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gstreamer = { version = "0.22.3", features = ["v1_22"] }
+anyhow = "1.0.81"
+derive_more = "0.99.17"
+glib = "0.19.3"
+gstreamer-video = "0.22.4"
