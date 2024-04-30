@@ -45,6 +45,7 @@ fn main() -> Result<(), Error> {
 
     let video_sink = gst::ElementFactory::make("decklinkvideosink")
         .property_from_str("mode", "1080p60")
+        .property_from_str("mapping-format", "level-a")
         .property("sync", true)
         .build()?;
 
